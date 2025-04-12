@@ -7,8 +7,10 @@ export default function PigLatin(){
 
     const [selectClass, setSelectClass] = useState('select-box-center');
     const [pClass, setPClass] = useState('none');
-    const [inputText, setInputText] = useState('');
+    const [outputText, setOutputText] = useState('');
     const [convertedText, setConvertedText] = useState('');
+    const [inputText, setInputText] = useState('');
+    const [selectValue, setSelectValue] = useState('select');
     
 
     function handleSelectClass(e){
@@ -30,23 +32,36 @@ export default function PigLatin(){
         }
     }, [selectClass])
 
+   
 
-    function handleInputChange(e){
+    function handleOutputChange(e){
+        const value = e.target.value;
+        setInputText(value);
+
         if(convertedText === 'pig-latin'){
-            setInputText(convertToPigLatin(e.target.value));
+            setOutputText(convertToPigLatin(e.target.value));
         }else {
-            setInputText(e.target.value);
+            setOutputText(e.target.value);
         }
     }
 
     function convertToPigLatin(text) {
         const ignoreSpaces = /\s+/g;
-        const textArray = text.split(ignoreSpaces)
+        const textArray = text.trim().toLowerCase().split(ignoreSpaces);
 
-        const convertedText = 1;
+        const pigLatinArray = textArray.map((word) => {
+            if (word[0].match(/[aeiou]/i)) {
+                return word + "yay";
+            } else if (word[0].match(/[bcdfghjklmnpqrstvwxyz]/i)) {
+                return word.slice(1) + word[0] + "ay";
+            } else{
+                return word;
+            }
 
-        return convertedText
+        })
 
+        return pigLatinArray.join(" ")
+        
     }
 
     return(
@@ -55,10 +70,20 @@ export default function PigLatin(){
     <div className={styles.container}>
         <div className={`${styles['plain-text']} ${styles.box}`}>
             <h1>Plain Text</h1>
-            <textarea onChange={handleInputChange}
+            <textarea onChange={handleOutputChange}
                 className={styles['input-box']} 
-                placeholder="Enter text here...">
-                </textarea>
+                placeholder="Enter text here..."
+                value={inputText}
+                >
+                
+                </textarea><br></br>
+                <button className={styles.clear} 
+                onClick={() => {
+                    setInputText('');
+                    setOutputText('');
+                    }}>
+                    Clear
+                    </button>
         </div>
         <div className={`${styles['modified-text']} ${styles.box}`}>
             <h1>Modified Text</h1>
@@ -68,7 +93,7 @@ export default function PigLatin(){
                 <option value="leet-speak">Leet Speak</option>
                 <option value="morse-code">Morse Code</option>
             </select>
-            <p className={styles[pClass]}>{inputText}</p>
+            <p className={styles[pClass]}>{outputText}</p>
             
         </div>
     </div>

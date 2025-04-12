@@ -109,3 +109,16 @@ h1:hover{
     overflow-wrap: break-word;
     word-wrap: break-word;
 }
+
+.clear{
+    width: 100px;
+    height: 20px;
+}
+
+.clear:hover{
+    background-color: red;
+    box-shadow: 0 0 5px yellow;
+    color:white;
+    font-weight: bold;
+    
+}
